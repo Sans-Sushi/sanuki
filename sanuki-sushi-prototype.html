@@ -1,0 +1,1340 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanuki Sushi & Street Thaï — Agde</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ============================================================
+       DIRECTION A — ZEN & TRADITIONNEL
+       Ivoire chaud, serif display, espace négatif, bronze
+    ============================================================ */
+    :root, .theme-a {
+      --bg:            #F7F3EC;
+      --surface:       #FDFAF5;
+      --fg:            #1C1714;
+      --muted:         #7A6A58;
+      --border:        #DDD5C5;
+      --accent:        #8B5A2B;
+      --accent-text:   #7A4F22;
+      --card-bg:       #FDFAF5;
+      --uber-visual-bg: #1A1410;
+      --nav-bg:        rgba(247,243,236,0.94);
+      --switcher-bg:   #EDE8DE;
+      --radius:        2px;
+      --font-display:  'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+      --font-body:     -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif;
+      --section-pad-v: clamp(72px, 9vw, 128px);
+      --section-pad-h: clamp(24px, 7vw, 120px);
+      --hero-size:     clamp(52px, 8.5vw, 112px);
+    }
+
+    /* ============================================================
+       DIRECTION B — MODERNE & ÉNERGIQUE
+       Quasi-noir, rouge laque, Space Grotesk, géométrie
+    ============================================================ */
+    .theme-b {
+      --bg:            #0A0A0A;
+      --surface:       #111111;
+      --fg:            #EEECEA;
+      --muted:         #6E6C6A;
+      --border:        #252525;
+      --accent:        #E82040;
+      --accent-text:   #FF3352;
+      --card-bg:       #141414;
+      --uber-visual-bg: #0A0A0A;
+      --nav-bg:        rgba(10,10,10,0.97);
+      --switcher-bg:   #1A1A1A;
+      --radius:        0px;
+      --font-display:  'Space Grotesk', system-ui, sans-serif;
+      --font-body:     'Space Grotesk', system-ui, sans-serif;
+      --section-pad-v: clamp(72px, 9vw, 128px);
+      --section-pad-h: clamp(24px, 7vw, 120px);
+      --hero-size:     clamp(48px, 8vw, 104px);
+    }
+
+    /* ============================================================
+       DIRECTION C — HAUT DE GAMME / GASTRONOMIQUE
+       Blanc pur, Playfair italic léger, silence, rigueur éditoriale
+    ============================================================ */
+    .theme-c {
+      --bg:            #FAFAFA;
+      --surface:       #FFFFFF;
+      --fg:            #0D0D0D;
+      --muted:         #8A8A8A;
+      --border:        #E4E4E4;
+      --accent:        #0D0D0D;
+      --accent-text:   #0D0D0D;
+      --card-bg:       #FFFFFF;
+      --uber-visual-bg: #F0F0F0;
+      --nav-bg:        rgba(250,250,250,0.96);
+      --switcher-bg:   #F0F0F0;
+      --radius:        0px;
+      --font-display:  'Playfair Display', 'Georgia', serif;
+      --font-body:     -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      --section-pad-v: clamp(88px, 11vw, 148px);
+      --section-pad-h: clamp(24px, 7vw, 120px);
+      --hero-size:     clamp(60px, 10.5vw, 136px);
+    }
+
+    /* ============================================================
+       BASE
+    ============================================================ */
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 0.45s ease, color 0.45s ease;
+    }
+
+    /* ============================================================
+       THEME SWITCHER
+    ============================================================ */
+    .theme-switcher {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      z-index: 9000;
+      display: flex;
+      gap: 3px;
+      background: var(--switcher-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .theme-switcher button {
+      font-family: var(--font-body);
+      font-size: 10.5px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 7px 15px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .theme-switcher button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .theme-c .theme-switcher button.active {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--section-pad-h);
+      height: 68px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--fg);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .theme-b .nav-logo { font-weight: 700; letter-spacing: -0.01em; font-size: 18px; }
+    .theme-c .nav-logo { font-weight: 300; letter-spacing: 0.1em; }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-cta {
+      font-size: 12px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: opacity 0.2s;
+      font-weight: 500;
+    }
+    .theme-c .nav-cta { background: var(--fg); }
+    .nav-cta:hover { opacity: 0.82; }
+
+    /* ============================================================
+       SECTION BASE
+    ============================================================ */
+    section {
+      padding: var(--section-pad-v) var(--section-pad-h);
+    }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--muted);
+      flex-shrink: 0;
+    }
+    .theme-b .eyebrow::before { background: var(--accent); }
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      color: var(--fg);
+    }
+    .theme-b .section-heading { font-weight: 700; letter-spacing: -0.025em; }
+    .theme-c .section-heading { font-style: italic; font-weight: 300; letter-spacing: -0.02em; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-top: 68px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    /* A — Aquarelle kanji */
+    .hero-kanji {
+      position: absolute;
+      right: -2%;
+      top: 50%;
+      transform: translateY(-52%);
+      font-family: 'Hiragino Mincho Pro', 'Yu Mincho', 'MS Mincho', 'Noto Serif CJK JP', serif;
+      font-size: clamp(220px, 32vw, 480px);
+      font-weight: 300;
+      color: rgba(139,90,43,0.045);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .theme-b .hero-kanji,
+    .theme-c .hero-kanji { display: none; }
+
+    /* B — Barre accent gauche */
+    .hero-accent-bar {
+      display: none;
+    }
+    .theme-b .hero-accent-bar {
+      display: block;
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* B: grille 2 colonnes */
+    .theme-b .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(48px, 8vw, 112px);
+      align-items: end;
+    }
+
+    /* C: centré */
+    .theme-c .hero-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .theme-c .hero-tag { color: var(--muted); justify-content: center; }
+    .theme-c .hero-tag::before { background: var(--muted); }
+
+    h1.hero-headline {
+      font-family: var(--font-display);
+      font-size: var(--hero-size);
+      font-weight: 300;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      margin-bottom: 32px;
+      max-width: 13ch;
+    }
+    .theme-b h1.hero-headline {
+      font-weight: 700;
+      letter-spacing: -0.035em;
+    }
+    .theme-b h1.hero-headline .hero-accent-word {
+      color: var(--accent);
+    }
+    .theme-c h1.hero-headline {
+      font-style: italic;
+      font-weight: 300;
+      max-width: none;
+      letter-spacing: -0.015em;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.72;
+      color: var(--muted);
+      max-width: 46ch;
+      margin-bottom: 52px;
+    }
+    .theme-c .hero-sub { max-width: 50ch; margin-left: auto; margin-right: auto; font-size: 16px; }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 0;
+    }
+    .theme-c .hero-actions { justify-content: center; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 16px 32px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: opacity 0.2s, transform 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .theme-c .btn-primary { background: var(--fg); }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 15px 30px;
+      background: transparent;
+      color: var(--fg);
+      text-decoration: none;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--fg); }
+
+    /* B: stats droite */
+    .hero-right { display: none; }
+    .theme-b .hero-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 4px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+    }
+    .stat-cell {
+      padding: 28px 24px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-cell:nth-child(2n) { border-right: none; }
+    .stat-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-num .red { color: var(--accent); }
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Hero footer bar */
+    .hero-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 72px;
+      padding-top: 28px;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .theme-c .hero-footer {
+      justify-content: center;
+      gap: 64px;
+    }
+    .hero-info {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-info span {
+      display: block;
+      font-size: 15px;
+      letter-spacing: 0;
+      color: var(--fg);
+      margin-top: 5px;
+      font-family: var(--font-display);
+      font-weight: 400;
+      text-transform: none;
+    }
+    .theme-b .hero-info span { font-weight: 600; font-size: 14px; }
+
+    /* ============================================================
+       MENU SECTION
+    ============================================================ */
+    #menu {
+      background: var(--surface);
+    }
+    .menu-header {
+      margin-bottom: 52px;
+    }
+    .menu-header .section-heading {
+      margin-top: 12px;
+    }
+
+    .tabs-row {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+      gap: 0;
+    }
+    .tab-btn {
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 14px 28px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .tab-btn.active { color: var(--fg); }
+    .tab-btn.active::after { transform: scaleX(1); }
+    .tab-btn:hover { color: var(--fg); }
+
+    .menu-panel { display: none; }
+    .menu-panel.active { display: block; }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: clamp(14px, 2vw, 22px);
+    }
+
+    .menu-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .menu-card:hover { transform: translateY(-3px); }
+    .theme-b .menu-card:hover { transform: none; border-color: var(--accent); }
+
+    .card-img {
+      height: 172px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Placeholders culinaires par couleur naturelle */
+    .ph-salmon   { background: linear-gradient(140deg, #F0C4A0 0%, #D9895A 100%); }
+    .ph-tuna     { background: linear-gradient(140deg, #D97878 0%, #B03535 100%); }
+    .ph-green    { background: linear-gradient(140deg, #A8C87A 0%, #6A9840 100%); }
+    .ph-shrimp   { background: linear-gradient(140deg, #F0C4A8 0%, #D47850 100%); }
+    .ph-gold     { background: linear-gradient(140deg, #D4A860 0%, #9C7030 100%); }
+    .ph-avocado  { background: linear-gradient(140deg, #A0C880 0%, #5A8840 100%); }
+    .ph-sake     { background: linear-gradient(140deg, #EEE0C0 0%, #C8A860 100%); }
+    .ph-beer     { background: linear-gradient(140deg, #F0D080 0%, #C09030 100%); }
+    .ph-tea      { background: linear-gradient(140deg, #A0D0A0 0%, #589050 100%); }
+    .ph-blue     { background: linear-gradient(140deg, #A0B8F0 0%, #5070C0 100%); }
+    .ph-beef     { background: linear-gradient(140deg, #D09070 0%, #885030 100%); }
+    .ph-aqua     { background: linear-gradient(140deg, #A0D0E8 0%, #4898C0 100%); }
+    /* Theme C: placeholders neutres */
+    .theme-c .card-img { background: #F2F2F2 !important; }
+
+    .card-img-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .theme-c .card-img-label { color: rgba(0,0,0,0.28); }
+
+    .card-body { padding: 20px 22px 22px; }
+
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .theme-b .card-name { font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+    .theme-c .card-name { font-style: italic; font-weight: 400; }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .card-price {
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 400;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .theme-b .card-price { font-weight: 700; font-size: 19px; }
+    .theme-c .card-price { color: var(--fg); font-weight: 300; }
+    .card-qty {
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ============================================================
+       UBER EATS
+    ============================================================ */
+    #commande {
+      background: var(--bg);
+    }
+    .commande-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(48px, 8vw, 120px);
+      align-items: center;
+    }
+    .commande-visual {
+      background: var(--uber-visual-bg);
+      border-radius: var(--radius);
+      aspect-ratio: 4 / 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .commande-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 50%,
+        rgba(6,193,103,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .theme-c .commande-visual::before { background: none; }
+    .ue-wordmark {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: #06C167;
+      line-height: 1;
+      text-align: center;
+    }
+    .ue-sub {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .theme-c .ue-sub { color: rgba(0,0,0,0.35); }
+
+    .commande-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4.5vw, 52px);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.12;
+      color: var(--fg);
+      margin-bottom: 22px;
+      margin-top: 14px;
+    }
+    .theme-b .commande-title { font-weight: 700; letter-spacing: -0.03em; }
+    .theme-c .commande-title { font-style: italic; font-weight: 300; }
+
+    .commande-desc {
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--muted);
+      margin-bottom: 36px;
+      max-width: 42ch;
+    }
+    .trust-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .trust-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #06C167;
+      flex-shrink: 0;
+    }
+    .btn-uber {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding: 18px 36px;
+      background: #06C167;
+      color: #000;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-uber:hover { background: #05AA59; transform: translateY(-1px); }
+
+    /* ============================================================
+       RÉSERVATION / CONTACT
+    ============================================================ */
+    #contact {
+      background: var(--surface);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(48px, 8vw, 120px);
+      margin-top: 56px;
+    }
+
+    .info-block { margin-bottom: 44px; }
+    .info-label {
+      font-size: 10px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .info-value {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--fg);
+    }
+    .theme-b .info-value { font-weight: 500; font-size: 16px; }
+
+    .hours-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .hours-table td {
+      font-size: 13px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--fg);
+    }
+    .hours-table td:first-child { color: var(--muted); padding-right: 24px; white-space: nowrap; }
+    .hours-table td.closed { color: var(--muted); }
+    .hours-table tr:last-child td { border-bottom: none; }
+    .hours-note {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* Form */
+    .form-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      color: var(--fg);
+      margin-bottom: 32px;
+      line-height: 1.15;
+    }
+    .theme-b .form-title { font-weight: 700; letter-spacing: -0.025em; }
+    .theme-c .form-title { font-style: italic; font-weight: 300; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .form-label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+      font-weight: 500;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 13px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-input::placeholder { color: var(--muted); opacity: 0.65; }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus { border-color: var(--accent); }
+    .form-textarea { resize: vertical; min-height: 96px; line-height: 1.55; }
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8A8A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+    .btn-submit {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 17px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      margin-top: 6px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .theme-c .btn-submit { background: var(--fg); }
+    .btn-submit:hover { opacity: 0.86; transform: translateY(-1px); }
+    .form-success {
+      display: none;
+      padding: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .form-success strong { color: var(--fg); display: block; margin-bottom: 6px; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px var(--section-pad-h);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      background: var(--bg);
+    }
+    .footer-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--fg);
+    }
+    .theme-b .footer-name { font-weight: 600; font-size: 15px; }
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 860px) {
+      .commande-grid,
+      .contact-grid { grid-template-columns: 1fr; }
+      .theme-b .hero-inner { grid-template-columns: 1fr; }
+      .theme-b .hero-right { display: none; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .theme-switcher {
+        top: 76px;
+        right: 12px;
+      }
+      .theme-switcher button { font-size: 10px; padding: 6px 11px; }
+    }
+    @media (max-width: 560px) {
+      .form-row { grid-template-columns: 1fr; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .hero-footer { gap: 28px; }
+    }
+  </style>
+</head>
+<body class="theme-a">
+
+  <!-- Sélecteur de direction -->
+  <div class="theme-switcher" id="switcher">
+    <button data-t="theme-a" class="active">A — Zen</button>
+    <button data-t="theme-b">B — Énergie</button>
+    <button data-t="theme-c">C — Prestige</button>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <a class="nav-logo" href="#hero">Sanuki</a>
+    <ul class="nav-links">
+      <li><a href="#hero">Accueil</a></li>
+      <li><a href="#menu">Carte</a></li>
+      <li><a href="#commande">Commander</a></li>
+      <li><a href="#contact">Réserver</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Réserver une table</a>
+  </nav>
+
+  <!-- 01 — HERO -->
+  <section id="hero">
+    <div class="hero-kanji" aria-hidden="true">寿司</div>
+    <div class="hero-accent-bar" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-tag">Agde, Hérault — Sushi &amp; Street Thaï</div>
+
+        <h1 class="hero-headline">
+          L'art du sushi<br>
+          <span class="hero-accent-word">au cœur</span><br>
+          d'Agde.
+        </h1>
+
+        <p class="hero-sub">
+          Des planches généreuses, des sushis façonnés avec soin —
+          une adresse que l'on garde pour soi et que l'on finit
+          toujours par partager.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn-primary" href="#menu">
+            Voir la carte
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="btn-ghost" href="#contact">Réserver une table</a>
+        </div>
+
+        <div class="hero-footer">
+          <div class="hero-info">
+            Cuisine
+            <span>Japonaise &amp; Thaïe</span>
+          </div>
+          <div class="hero-info">
+            Note clients
+            <span>★ 4,7 / 5</span>
+          </div>
+          <div class="hero-info">
+            Livraison
+            <span>Via Uber Eats</span>
+          </div>
+          <div class="hero-info">
+            Adresse
+            <span>13 Av. du 8 Mai 1945, Agde</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- B: colonne stats -->
+      <div class="hero-right" aria-hidden="true">
+        <div class="stats-grid">
+          <div class="stat-cell">
+            <div class="stat-num"><span class="red">4,7</span></div>
+            <div class="stat-label">Note Google</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">74</div>
+            <div class="stat-label">Avis vérifiés</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">20<span style="font-size:22px;font-weight:400">+</span></div>
+            <div class="stat-label">Références carte</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num"><span class="red">50</span><span style="font-size:20px;font-weight:400">min</span></div>
+            <div class="stat-label">Livraison estimée</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 — MENU -->
+  <section id="menu">
+    <div class="menu-header">
+      <div class="eyebrow">Notre sélection</div>
+      <h2 class="section-heading">La carte</h2>
+    </div>
+
+    <div class="tabs-row" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-panel="planches">Planches</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-panel="alacarte">Sushis à la carte</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-panel="boissons">Boissons</button>
+    </div>
+
+    <!-- Planches -->
+    <div class="menu-panel active" id="panel-planches">
+      <div class="menu-grid">
+        <article class="menu-card">
+          <div class="card-img ph-salmon"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Planche Découverte</h3>
+            <p class="card-desc">Maki, nigiri, california — un voyage en 14 pièces pour apprivoiser la carte.</p>
+            <div class="card-footer">
+              <span class="card-price">18,90 €</span>
+              <span class="card-qty">14 pièces</span>
+            </div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img" style="background:linear-gradient(140deg,#EAB890 0%,#C87040 100%)"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Planche Saumon</h3>
+            <p class="card-desc">Toute la richesse du saumon : nigiri, maki, california avocat.</p>
+            <div class="card-footer">
+              <span class="card-price">21,50 €</span>
+              <span class="card-qty">16 pièces</span>
+            </div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-gold"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Planche Prestige</h3>
+            <p class="card-desc">Thon rouge, dorade, saumon, crevette tigrée — notre sélection premium.</p>
+            <div class="card-footer">
+              <span class="card-price">27,90 €</span>
+              <span class="card-qty">22 pièces</span>
+            </div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-avocado"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Planche Végétarienne</h3>
+            <p class="card-desc">Avocat, concombre, mangue, poivron grillé — fraîcheur et couleurs.</p>
+            <div class="card-footer">
+              <span class="card-price">14,90 €</span>
+              <span class="card-qty">12 pièces</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Sushis à la carte -->
+    <div class="menu-panel" id="panel-alacarte">
+      <div class="menu-grid">
+        <article class="menu-card">
+          <div class="card-img ph-salmon"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Nigiri Saumon</h3>
+            <p class="card-desc">Tranche de saumon frais sur riz vinaigré, touche de wasabi.</p>
+            <div class="card-footer"><span class="card-price">5,50 €</span><span class="card-qty">2 pièces</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-tuna"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Nigiri Thon</h3>
+            <p class="card-desc">Thon rouge de qualité, finesse et intensité en bouche.</p>
+            <div class="card-footer"><span class="card-price">6,50 €</span><span class="card-qty">2 pièces</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-green"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">California Saumon</h3>
+            <p class="card-desc">L'incontournable — saumon, avocat, cream cheese, sésame doré.</p>
+            <div class="card-footer"><span class="card-price">7,90 €</span><span class="card-qty">6 pièces</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-blue"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Dragon Roll</h3>
+            <p class="card-desc">Crevette tempura, avocat, sauce épicée maison — notre signature.</p>
+            <div class="card-footer"><span class="card-price">12,90 €</span><span class="card-qty">8 pièces</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-beef"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Tataki Bœuf</h3>
+            <p class="card-desc">Bœuf saisi, sauce ponzu, oignons frits — un classique revisité.</p>
+            <div class="card-footer"><span class="card-price">10,90 €</span><span class="card-qty">5 pièces</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-shrimp"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Temaki Crevette</h3>
+            <p class="card-desc">Cône de nori, crevette, avocat, sauce sriracha — à déguster à la main.</p>
+            <div class="card-footer"><span class="card-price">5,90 €</span><span class="card-qty">1 cône</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Boissons -->
+    <div class="menu-panel" id="panel-boissons">
+      <div class="menu-grid">
+        <article class="menu-card">
+          <div class="card-img ph-sake"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Saké Chaud</h3>
+            <p class="card-desc">Alcool de riz japonais traditionnel, servi dans une carafe en céramique.</p>
+            <div class="card-footer"><span class="card-price">5,50 €</span><span class="card-qty">18 cl</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-beer"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Bière Asahi</h3>
+            <p class="card-desc">La bière japonaise par excellence — légère, crisp, parfaite avec les sushis.</p>
+            <div class="card-footer"><span class="card-price">4,90 €</span><span class="card-qty">33 cl</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-tea"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Thé Vert Sencha</h3>
+            <p class="card-desc">Infusion de feuilles de thé vert japonais, servie en théière individuelle.</p>
+            <div class="card-footer"><span class="card-price">2,50 €</span><span class="card-qty">25 cl</span></div>
+          </div>
+        </article>
+        <article class="menu-card">
+          <div class="card-img ph-aqua"><span class="card-img-label">Photo à venir</span></div>
+          <div class="card-body">
+            <h3 class="card-name">Ramune</h3>
+            <p class="card-desc">La limonade japonaise à la bille de verre — incontournable pour petits et grands.</p>
+            <div class="card-footer"><span class="card-price">3,50 €</span><span class="card-qty">24 cl</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — UBER EATS -->
+  <section id="commande">
+    <div class="commande-grid">
+      <div class="commande-visual" aria-hidden="true">
+        <div class="ue-wordmark">Uber<br>Eats</div>
+        <div class="ue-sub">Livraison à domicile</div>
+      </div>
+      <div class="commande-text">
+        <div class="eyebrow">Commandez sans vous déplacer</div>
+        <h2 class="commande-title">Sanuki livré directement chez vous.</h2>
+        <p class="commande-desc">Toute la carte disponible en livraison à Agde et ses alentours, en environ 50 minutes. Fraîcheur garantie, emballage soigné.</p>
+        <ul class="trust-list">
+          <li class="trust-item"><span class="trust-dot"></span><span>Livraison estimée ~50 min</span></li>
+          <li class="trust-item"><span class="trust-dot"></span><span>Emballage sushi isotherme</span></li>
+          <li class="trust-item"><span class="trust-dot"></span><span>Paiement sécurisé via Uber Eats</span></li>
+          <li class="trust-item"><span class="trust-dot"></span><span>Toute la carte disponible à l'emporter</span></li>
+        </ul>
+        <a class="btn-uber" href="https://www.ubereats.com/fr/category/agde-occ/sushi" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Commander sur Uber Eats
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — RÉSERVATION / CONTACT -->
+  <section id="contact">
+    <div class="eyebrow">Nous rendre visite</div>
+    <h2 class="section-heading">Réservation &amp; Contact</h2>
+
+    <div class="contact-grid">
+      <div>
+        <div class="info-block">
+          <div class="info-label">Adresse</div>
+          <div class="info-value">13 Avenue du 8 Mai 1945<br>34300 Agde, Hérault</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Téléphone</div>
+          <div class="info-value">[Téléphone — à confirmer]</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Horaires d'ouverture</div>
+          <table class="hours-table">
+            <tbody>
+              <tr><td>Lundi</td><td class="closed">Fermé</td></tr>
+              <tr><td>Mardi</td><td class="closed">Fermé</td></tr>
+              <tr><td>Mercredi</td><td>11h30 – 14h &nbsp;•&nbsp; 18h – 22h</td></tr>
+              <tr><td>Jeudi</td><td>11h30 – 14h &nbsp;•&nbsp; 18h – 22h</td></tr>
+              <tr><td>Vendredi</td><td>11h30 – 14h &nbsp;•&nbsp; 18h – 22h30</td></tr>
+              <tr><td>Samedi</td><td>12h – 14h30 &nbsp;•&nbsp; 18h – 22h30</td></tr>
+              <tr><td>Dimanche</td><td>12h – 14h30 &nbsp;•&nbsp; 18h – 21h30</td></tr>
+            </tbody>
+          </table>
+          <p class="hours-note">[Horaires indicatifs — confirmer avant la visite]</p>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Accès</div>
+          <div class="info-value" style="font-size:15px">
+            <a href="https://maps.google.com/?q=Sanuki+Sushi+Agde" target="_blank" rel="noopener"
+              style="color:var(--accent);text-decoration:underline;text-underline-offset:3px">
+              Voir sur Google Maps →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="form-title">Réserver une table</h3>
+        <form id="bookingForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-nom">Nom &amp; prénom</label>
+              <input type="text" id="f-nom" class="form-input" placeholder="Jean Dupont" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-tel">Téléphone</label>
+              <input type="tel" id="f-tel" class="form-input" placeholder="06 XX XX XX XX" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-email">Email</label>
+            <input type="email" id="f-email" class="form-input" placeholder="vous@exemple.fr">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-date">Date</label>
+              <input type="date" id="f-date" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-heure">Heure</label>
+              <select id="f-heure" class="form-select" required>
+                <option value="">Choisir…</option>
+                <optgroup label="Midi">
+                  <option>12h00</option><option>12h30</option>
+                  <option>13h00</option><option>13h30</option>
+                </optgroup>
+                <optgroup label="Soir">
+                  <option>19h00</option><option>19h30</option>
+                  <option>20h00</option><option>20h30</option><option>21h00</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-convives">Nombre de convives</label>
+            <select id="f-convives" class="form-select" required>
+              <option value="">Sélectionner…</option>
+              <option>1 personne</option><option>2 personnes</option>
+              <option>3 personnes</option><option>4 personnes</option>
+              <option>5 personnes</option><option>6 personnes</option>
+              <option>7 personnes ou plus — nous contacter</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-msg">Message (facultatif)</label>
+            <textarea id="f-msg" class="form-textarea" placeholder="Allergie, occasion spéciale, chaise bébé, terrasse…"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Confirmer la réservation</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <strong>Demande envoyée !</strong>
+          Nous vous confirmons votre table par SMS ou email sous 2 heures. À bientôt chez Sanuki.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-name">Sanuki Sushi &amp; Street Thaï</div>
+    <div class="footer-copy">13 Av. du 8 Mai 1945 · 34300 Agde · © 2025</div>
+  </footer>
+
+  <script>
+    // Theme switcher
+    var switcher = document.getElementById('switcher');
+    function applyTheme(t) {
+      document.body.className = t;
+      switcher.querySelectorAll('button').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.t === t);
+      });
+      try { localStorage.setItem('sanuki:theme', t); } catch(_) {}
+    }
+    switcher.querySelectorAll('button').forEach(function(btn) {
+      btn.addEventListener('click', function() { applyTheme(btn.dataset.t); });
+    });
+    try {
+      var saved = localStorage.getItem('sanuki:theme');
+      if (saved && ['theme-a','theme-b','theme-c'].indexOf(saved) !== -1) applyTheme(saved);
+    } catch(_) {}
+
+    // Menu tabs
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.menu-panel').forEach(function(p) {
+          p.classList.remove('active');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        var panel = document.getElementById('panel-' + btn.dataset.panel);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    // Reservation form
+    var dateInput = document.getElementById('f-date');
+    if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      this.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
