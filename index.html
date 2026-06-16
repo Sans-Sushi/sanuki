@@ -11,7 +11,9 @@
        RESET
     ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
     /* ============================================================
        DIRECTION A — ZEN & TRADITIONNEL
@@ -45,7 +47,7 @@
       --bg:            #0A0A0A;
       --surface:       #111111;
       --fg:            #EEECEA;
-      --muted:         #6E6C6A;
+      --muted:         #9A9896;
       --border:        #252525;
       --accent:        #E82040;
       --accent-text:   #FF3352;
@@ -93,7 +95,7 @@
       --bg:            #1A1A1E;
       --surface:       #222226;
       --fg:            #F0EED8;
-      --muted:         #8A8880;
+      --muted:         #B0AEA8;
       --border:        #3A3A40;
       --accent:        #FF2A75;
       --accent-text:   #FF55A0;
@@ -138,8 +140,8 @@
     .theme-d .btn-submit:hover { opacity: 0.85; }
     .theme-d .form-input.error,
     .theme-d .form-select.error,
-    .theme-d .form-textarea.error { border-color: var(--accent); }
-    .theme-d .form-err { color: var(--accent); }
+    .theme-d .form-textarea.error { border-color: color-mix(in oklch, var(--accent) 75%, #000); }
+    .theme-d .form-err { color: color-mix(in oklch, var(--accent) 75%, #000); }
 
     /* ============================================================
        DIRECTION E — CÔTIER / MÉDITERRANÉEN
@@ -192,8 +194,8 @@
     .theme-e .btn-submit:hover { background: #15506B; }
     .theme-e .form-input.error,
     .theme-e .form-select.error,
-    .theme-e .form-textarea.error { border-color: var(--accent); }
-    .theme-e .form-err { color: var(--accent); }
+    .theme-e .form-textarea.error { border-color: color-mix(in oklch, var(--accent) 75%, #000); }
+    .theme-e .form-err { color: color-mix(in oklch, var(--accent) 75%, #000); }
     .theme-e .sections-wrapper > #hero { background: var(--surface); }
     .theme-e .sections-wrapper > #menu { background: var(--bg); }
     .theme-e .sections-wrapper > #commande { background: var(--surface); }
@@ -214,27 +216,25 @@
     }
 
     /* ============================================================
-       THEME SWITCHER
+       THEME SWITCHER (dans la nav)
     ============================================================ */
     .theme-switcher {
-      position: fixed;
-      top: 16px;
-      right: 20px;
-      z-index: 9000;
       display: flex;
-      gap: 3px;
+      gap: 2px;
       background: var(--switcher-bg);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 4px;
+      padding: 3px;
       transition: background 0.3s, border-color 0.3s;
+      flex-shrink: 0;
+      position: relative;
     }
     .theme-switcher button {
       font-family: var(--font-body);
-      font-size: 10.5px;
+      font-size: 10px;
       letter-spacing: 0.09em;
       text-transform: uppercase;
-      padding: 7px 15px;
+      padding: 6px 12px;
       border: none;
       background: transparent;
       color: var(--muted);
@@ -248,9 +248,9 @@
     }
     .switcher-indicator {
       position: absolute;
-      top: 4px;
-      left: 4px;
-      height: calc(100% - 8px);
+      top: 3px;
+      left: 3px;
+      height: calc(100% - 6px);
       width: 70px;
       border-radius: 999px;
       background: var(--accent);
@@ -281,6 +281,7 @@
       border-bottom: 1px solid var(--border);
       transition: background 0.3s, border-color 0.3s;
     }
+    body { padding-top: 68px; }
     .nav-logo {
       font-family: var(--font-display);
       font-size: 20px;
@@ -289,6 +290,11 @@
       color: var(--fg);
       text-decoration: none;
       transition: color 0.2s;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
     .theme-b .nav-logo { font-weight: 700; letter-spacing: -0.01em; font-size: 18px; }
     .theme-c .nav-logo { font-weight: 300; letter-spacing: 0.1em; }
@@ -697,6 +703,11 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 56px;
       gap: 0;
+      position: sticky;
+      top: 68px;
+      z-index: 5;
+      background: var(--bg);
+      padding: 10px 0 8px;
     }
     .tab-btn {
       font-family: var(--font-body);
@@ -726,6 +737,43 @@
     .tab-btn.active { color: var(--fg); }
     .tab-btn.active::after { transform: scaleX(1); }
     .tab-btn:hover { color: var(--fg); }
+    .tab-btn { min-height: 44px; }
+
+    /* Hamburger mobile */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      margin-left: auto;
+      z-index: 12;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--fg);
+      border-radius: 1px;
+      transition: transform 0.3s ease, opacity 0.2s ease;
+      transform-origin: center;
+    }
+    .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 8;
+      background: rgba(0,0,0,0.35);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .nav-overlay.is-visible { display: block; opacity: 1; }
 
     .menu-panel { display: none; }
     .menu-panel.active { display: block; }
@@ -1078,23 +1126,22 @@
     .form-textarea:focus { border-color: var(--accent); }
     .form-input.error,
     .form-select.error,
-    .form-textarea.error { border-color: #D03030; }
-    .theme-b .form-input.error,
-    .theme-b .form-select.error,
-    .theme-b .form-textarea.error { border-color: #FF3352; }
+    .form-textarea.error { border-color: color-mix(in oklch, var(--accent) 70%, #000); }
     .form-err {
       display: none;
       font-size: 11px;
       letter-spacing: 0.02em;
-      color: #D03030;
+      color: color-mix(in oklch, var(--accent) 70%, #000);
       margin-top: 5px;
     }
-    .theme-b .form-err { color: #FF3352; }
     .form-input.error + .form-err,
     .form-select.error + .form-err { display: block; }
     .form-input:focus.error,
     .form-select:focus.error,
-    .form-textarea:focus.error { border-color: #D03030; }
+    .form-textarea:focus.error,
+    .form-input:focus:user-invalid,
+    .form-select:focus:user-invalid,
+    .form-textarea:focus:user-invalid { border-color: color-mix(in oklch, var(--accent) 80%, #000); }
     .form-select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8A8A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
@@ -1211,17 +1258,36 @@
       .theme-b .hero-right,
       .theme-d .hero-right,
       .theme-e .hero-right { display: none; }
-      .nav-links { display: none; }
-      .nav-cta { display: none; }
-      .theme-switcher {
-        top: 76px;
-        right: 8px;
+      .nav-links {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 260px;
+        height: 100vh;
+        height: 100dvh;
+        background: var(--surface);
+        flex-direction: column;
+        padding: 80px 24px 32px;
+        gap: 8px;
+        z-index: 9;
+        box-shadow: -4px 0 20px rgba(0,0,0,0.08);
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
       }
-      .theme-switcher button { font-size: 9px; padding: 5px 8px; }
+.nav-links.is-open { transform: translateX(0); }
+      .nav-links a { display: block; padding: 14px 0; font-size: 17px; border-bottom: 1px solid var(--border); }
+      .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .nav-right { gap: 10px; }
+      .theme-switcher button { font-size: 8.5px; padding: 4px 7px; letter-spacing: 0.05em; }
+      .theme-switcher { gap: 1px; padding: 2px; }
+      .theme-switcher button { font-size: 8px; padding: 3px 5px; letter-spacing: 0.04em; }
+      .theme-switcher { gap: 1px; padding: 2px; }
+      .nav-logo { font-size: 16px; }
+      .tabs-row { top: 60px; padding: 8px 0 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 4px; }
+      .tab-btn { white-space: nowrap; font-size: 13px; padding: 10px 12px; }
     }
-    .theme-d .theme-switcher { top: 76px; right: 8px; }
-    .theme-e .hero-split-e { grid-template-columns: 1fr; gap: 32px; }
-    .theme-e .hero-split-visual { aspect-ratio: 16/9; }
     @media (max-width: 560px) {
       .form-row { grid-template-columns: 1fr; }
       .menu-grid { grid-template-columns: 1fr; }
@@ -1239,6 +1305,10 @@
       from { opacity: 0; }
       to   { opacity: 1; }
     }
+
+    section[id] { scroll-margin-top: 120px; }
+    #menu { scroll-margin-top: 160px; }
+    .theme-c #menu { scroll-margin-top: 120px; }
 
     @media (prefers-reduced-motion: no-preference) {
       /* Hero entry — stagger par élément */
@@ -1303,28 +1373,17 @@
     }
 
     /* Fallback explicite reduced-motion */
-    @media (prefers-reduced-motion: reduce) {
-      .hero-tag, h1.hero-headline, .hero-sub,
-      .hero-actions, .hero-footer, .hero-kanji,
+@media (prefers-reduced-motion: reduce) {
+      .hero-tag, h1.hero-headline, .hero-sub, .hero-actions, .hero-footer, .hero-kanji,
       .hero-minimal-rule, .hero-minimal-headline, .hero-minimal-sub,
-      .hero-split-visual, .hero-split-tag, .hero-split-headline,
-      .hero-split-desc, .hero-split-actions {
-        animation: none !important;
-        opacity: 1 !important;
-      }
-      .reveal-on-scroll {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-      }
-      .switcher-indicator {
-        transition: none !important;
-      }
-      .form-success {
-        transition: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-      }
+      .hero-split-visual, .hero-split-tag, .hero-split-headline, .hero-split-desc, .hero-split-actions,
+      .menu-panel.panel-enter .menu-card,
+      .switcher-indicator, .form-success,
+      .reveal-on-scroll, .reveal-on-scroll.is-visible { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+      .hamburger span { transition: none !important; }
+      .nav-overlay { transition: none !important; }
+      .nav-links { transition: none !important; }
+      .switcher-indicator { transition: none !important; }
     }
 
     /* Retour haptique boutons */
@@ -1356,31 +1415,32 @@
 </head>
 <body class="theme-a">
 
-  <!-- ============================================================
-       SÉLECTEUR DE DIRECTION
-  ============================================================ -->
-  <div class="theme-switcher" id="switcher">
-    <button data-t="theme-a" class="active">A - Zen</button>
-    <button data-t="theme-b">B - Energie</button>
-    <button data-t="theme-c">C - Prestige</button>
-    <button data-t="theme-d">D - Street</button>
-    <button data-t="theme-e">E - Cotier</button>
-    <div class="switcher-indicator" id="swIndicator"></div>
-  </div>
-
-  <!-- ============================================================
-       NAVIGATION
-  ============================================================ -->
   <nav>
     <a class="nav-logo" href="#hero">Sanuki</a>
-    <ul class="nav-links">
-      <li><a href="#hero">Accueil</a></li>
-      <li><a href="#menu">Carte</a></li>
-      <li><a href="#commande">Commander</a></li>
-      <li><a href="#contact">Réserver</a></li>
-    </ul>
-    <a class="nav-cta" href="#contact">Réserver une table</a>
+    <div class="nav-right">
+      <div class="theme-switcher" id="switcher">
+        <button data-t="theme-a" class="active">A - Zen</button>
+        <button data-t="theme-b">B - Energie</button>
+        <button data-t="theme-c">C - Prestige</button>
+        <button data-t="theme-d">D - Street</button>
+        <button data-t="theme-e">E - Cotier</button>
+        <div class="switcher-indicator" id="swIndicator"></div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hero">Accueil</a></li>
+        <li><a href="#menu">Carte</a></li>
+        <li><a href="#commande">Commander</a></li>
+        <li><a href="#contact">Réserver</a></li>
+      </ul>
+      <a class="nav-cta" href="#contact">Réserver une table</a>
+    </div>
   </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
 
   <div class="sections-wrapper">
   <!-- ============================================================
@@ -1911,9 +1971,11 @@
     }
     function applyTheme(t) {
       document.body.className = t;
-      var activeBtn = switcher.querySelector('button.active');
-      if (activeBtn) positionIndicator(activeBtn);
       try { localStorage.setItem('sanuki:theme', t); } catch(_) {}
+      requestAnimationFrame(function() {
+        var ab = switcher.querySelector('button.active');
+        if (ab) positionIndicator(ab);
+      });
     }
     switcher.querySelectorAll('button').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -2075,6 +2137,30 @@
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
       revealTargets.forEach(function(el) { io.observe(el); });
+    }
+  // --- Hamburger menu mobile -----------------------------------
+    var hamburger = document.getElementById('hamburger');
+    var navLinks = document.getElementById('navLinks');
+    var navOverlay = document.getElementById('navOverlay');
+    if (hamburger && navLinks && navOverlay) {
+      function closeNav() {
+        hamburger.setAttribute('aria-expanded', 'false');
+        navLinks.classList.remove('is-open');
+        navOverlay.classList.remove('is-visible');
+      }
+      hamburger.addEventListener('click', function() {
+        var open = hamburger.getAttribute('aria-expanded') === 'true';
+        if (open) { closeNav(); }
+        else {
+          hamburger.setAttribute('aria-expanded', 'true');
+          navLinks.classList.add('is-open');
+          navOverlay.classList.add('is-visible');
+        }
+      });
+      navOverlay.addEventListener('click', closeNav);
+      navLinks.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', closeNav);
+      });
     }
   </script>
 </body>
