@@ -218,7 +218,7 @@ html {
     /* ============================================================
        THEME SWITCHER (dans la nav)
     ============================================================ */
-    .theme-switcher {
+    .theme-switcher-desktop {
       display: flex;
       gap: 2px;
       background: var(--switcher-bg);
@@ -227,14 +227,56 @@ html {
       padding: 3px;
       transition: background 0.3s, border-color 0.3s;
       flex-shrink: 0;
-      position: relative;
     }
-    .theme-switcher button {
+    @media (max-width: 860px) { .theme-switcher-desktop { display: none; } }
+    .theme-switcher-desktop button {
       font-family: var(--font-body);
       font-size: 10px;
       letter-spacing: 0.09em;
       text-transform: uppercase;
-      padding: 6px 12px;
+      padding: 6px 10px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .theme-switcher-desktop button.active { color: #fff; background: var(--accent); }
+    .theme-c .theme-switcher-desktop button.active { color: var(--bg); background: var(--fg); }
+
+    .switcher-bar {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      z-index: 999;
+      padding: 6px var(--section-pad-h);
+      background: var(--nav-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s, border-color 0.3s;
+      justify-content: center;
+    }
+    @media (max-width: 860px) { .switcher-bar { display: flex; } }
+    .switcher-bar .theme-switcher {
+      display: flex;
+      gap: 2px;
+      background: var(--switcher-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 2px;
+      transition: background 0.3s, border-color 0.3s;
+      position: relative;
+    }
+    .switcher-bar .theme-switcher button {
+      font-family: var(--font-body);
+      font-size: 8.5px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 4px 7px;
       border: none;
       background: transparent;
       color: var(--muted);
@@ -248,10 +290,9 @@ html {
     }
     .switcher-indicator {
       position: absolute;
-      top: 3px;
+      top: 2px;
       left: 3px;
-      height: calc(100% - 6px);
-      width: 70px;
+      height: calc(100% - 4px);
       border-radius: 999px;
       background: var(--accent);
       z-index: 0;
@@ -260,8 +301,8 @@ html {
       pointer-events: none;
     }
     .theme-c .switcher-indicator { background: var(--fg); }
-    .theme-switcher button.active { color: #fff; }
-    .theme-c .theme-switcher button.active { color: var(--bg); }
+    .switcher-bar .theme-switcher button.active { color: #fff; }
+    .theme-c .switcher-bar .theme-switcher button.active { color: var(--bg); }
 
     /* ============================================================
        NAVIGATION
@@ -282,6 +323,7 @@ html {
       transition: background 0.3s, border-color 0.3s;
     }
     body { padding-top: 68px; }
+    @media (max-width: 860px) { body { padding-top: 104px; } }
     .nav-logo {
       font-family: var(--font-display);
       font-size: 20px;
@@ -1280,12 +1322,8 @@ html {
       .nav-cta { display: none; }
       .hamburger { display: flex; }
       .nav-right { gap: 10px; }
-      .theme-switcher button { font-size: 8.5px; padding: 4px 7px; letter-spacing: 0.05em; }
-      .theme-switcher { gap: 1px; padding: 2px; }
-      .theme-switcher button { font-size: 8px; padding: 3px 5px; letter-spacing: 0.04em; }
-      .theme-switcher { gap: 1px; padding: 2px; }
       .nav-logo { font-size: 16px; }
-      .tabs-row { top: 60px; padding: 8px 0 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 4px; }
+      .tabs-row { top: 104px; padding: 8px 0 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 4px; }
       .tab-btn { white-space: nowrap; font-size: 13px; padding: 10px 12px; }
     }
     @media (max-width: 560px) {
@@ -1378,7 +1416,7 @@ html {
       .hero-minimal-rule, .hero-minimal-headline, .hero-minimal-sub,
       .hero-split-visual, .hero-split-tag, .hero-split-headline, .hero-split-desc, .hero-split-actions,
       .menu-panel.panel-enter .menu-card,
-      .switcher-indicator, .form-success,
+      .switcher-indicator, .form-success, .switcher-bar,
       .reveal-on-scroll, .reveal-on-scroll.is-visible { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
       .hamburger span { transition: none !important; }
       .nav-overlay { transition: none !important; }
@@ -1401,6 +1439,7 @@ html {
       outline-offset: 2px;
     }
     .theme-c :focus-visible { outline-color: var(--fg); }
+    .theme-switcher-desktop button:focus-visible,
     .tab-btn:focus-visible,
     .theme-switcher button:focus-visible,
     .nav-cta:focus-visible { outline-offset: 3px; }
@@ -1418,13 +1457,12 @@ html {
   <nav>
     <a class="nav-logo" href="#hero">Sanuki</a>
     <div class="nav-right">
-      <div class="theme-switcher" id="switcher">
-        <button data-t="theme-a" class="active">A - Zen</button>
-        <button data-t="theme-b">B - Energie</button>
-        <button data-t="theme-c">C - Prestige</button>
-        <button data-t="theme-d">D - Street</button>
-        <button data-t="theme-e">E - Cotier</button>
-        <div class="switcher-indicator" id="swIndicator"></div>
+      <div class="theme-switcher-desktop" id="swDesktop">
+        <button data-t="theme-a" class="active">A</button>
+        <button data-t="theme-b">B</button>
+        <button data-t="theme-c">C</button>
+        <button data-t="theme-d">D</button>
+        <button data-t="theme-e">E</button>
       </div>
       <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
         <span></span>
@@ -1440,6 +1478,16 @@ html {
       <a class="nav-cta" href="#contact">Réserver une table</a>
     </div>
   </nav>
+  <div class="switcher-bar" id="switcherBar">
+    <div class="theme-switcher" id="switcher">
+      <button data-t="theme-a" class="active">A - Zen</button>
+      <button data-t="theme-b">B - Energie</button>
+      <button data-t="theme-c">C - Prestige</button>
+      <button data-t="theme-d">D - Street</button>
+      <button data-t="theme-e">E - Cotier</button>
+      <div class="switcher-indicator" id="swIndicator"></div>
+    </div>
+  </div>
   <div class="nav-overlay" id="navOverlay"></div>
 
   <div class="sections-wrapper">
@@ -1977,24 +2025,36 @@ html {
         if (ab) positionIndicator(ab);
       });
     }
+function syncSwitchers(s) {
+      document.querySelectorAll('.theme-switcher-desktop button, .switcher-bar .theme-switcher button').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.t === s);
+      });
+    }
     switcher.querySelectorAll('button').forEach(function(btn) {
       btn.addEventListener('click', function() {
         if (btn.classList.contains('active')) return;
-        switcher.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
-        btn.classList.add('active');
+        syncSwitchers(btn.dataset.t);
         positionIndicator(btn);
         applyTheme(btn.dataset.t);
       });
     });
+    var swDesktop = document.getElementById('swDesktop');
+    if (swDesktop) {
+      swDesktop.querySelectorAll('button').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (btn.classList.contains('active')) return;
+          var t = btn.dataset.t;
+          syncSwitchers(t);
+          positionIndicator(switcher.querySelector('button[data-t="' + t + '"]'));
+          applyTheme(t);
+        });
+      });
+    }
     try {
       var saved = localStorage.getItem('sanuki:theme');
       if (saved && ['theme-a','theme-b','theme-c','theme-d','theme-e'].indexOf(saved) !== -1) {
         document.body.className = saved;
-        var savedBtn = switcher.querySelector('button[data-t="' + saved + '"]');
-        if (savedBtn) {
-          switcher.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
-          savedBtn.classList.add('active');
-        }
+        syncSwitchers(saved);
       }
     } catch(_) {}
     // Position indicator after layout (suppress transition for initial placement)
